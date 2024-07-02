@@ -398,19 +398,19 @@ class SuperVoltBt(BtBms):
             switches=dict(
                 #status_connected=self.is_connected(),
 
-                status_discharging=(self.workingState & 0x0002 > 0),
-                status_charging=(self.workingState & 0x0001 > 0),
+                status_discharging=False,
+                status_charging=False,
 
-                status_normal=(self.workingState & 0xF003 >= 0xF000),
+                status_normal=False,
 
-                status_protection=(self.workingState & 0x000C > 0x0000),
-                status_short=(self.workingState & 0x0020 > 0),
+                status_protection=False,
+                status_short=False,
 
-                status_overtemp=(self.workingState & 0x0500 > 0),
-                status_undertemp=(self.workingState & 0x0A00 > 0),
+                status_overtemp=False,
+                status_undertemp=False,
 
-                status_overvolt_protection=(self.workingState & 0x0004 > 0),
-                status_undervolt_protection=(self.workingState & 0x0008 > 0)
+                status_overvolt_protection=False,
+                status_undervolt_protection=False
             )
 
         )
