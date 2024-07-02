@@ -1,6 +1,6 @@
 name: "Batmon"
 description: "Monitor various BMS over bluetooth"
-url: https://github.com/fl4p/batmon-ha
+url: https://github.com/bezstpav/batmon-ha
 version: "1.78"
 slug: "batmon"
 init: false
@@ -28,19 +28,26 @@ discovery:
 
 options:
   devices:
-    - address: D6:6C:0A:61:14:30
-      type: sok
-      alias: battery1
+    - address: 02:00:07:F9:EA:9A
+      type: supervolt
+      debug: true
+    - address: 02:00:07:5F:6E:F9
+      type: supervolt
+      debug: true
   concurrent_sampling: false
   keep_alive: true
   verbose_log: false
-  sample_period: 1.0
-  publish_period: 2.0
+  sample_period: 30
+  publish_period: 100
   invert_current: true
   watchdog: true
-  expire_values_after: 20
-  install_newer_bleak: false
-  bt_power_cycle: false
+  expire_values_after: 300
+  install_newer_bleak: true
+  bt_power_cycle: true
+  mqtt_port: 1883
+  mqtt_broker: core-mosquitto
+  mqtt_user: bms
+  mqtt_password: bms
 
 schema:
   devices:
