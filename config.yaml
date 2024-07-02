@@ -1,7 +1,7 @@
 name: "Batmon DEV"
 description: "Monitor various BMS over bluetooth"
 url: https://github.com/bezstpav/batmon-ha
-version: "1.79"
+version: "1.80"
 slug: "batmon-dev"
 init: false
 host_dbus: true

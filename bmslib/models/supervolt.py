@@ -33,18 +33,18 @@ class SuperVoltBt(BtBms):
 
         self.cellV = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
         self.totalV = None
-        self.soc = None
-        self.workingState = None
-        self.alarm = None
-        self.chargingA = None
-        self.dischargingA = None
+        self.soc = 0
+        self.workingState = 0
+        self.alarm = 0
+        self.chargingA = 0
+        self.dischargingA = 0
         self.loadA = None
         self.tempC = [None, None, None, None]
         self.completeAh = 1
         self.remainingAh = 1
         self.designedAh = 1
-        self.dischargeNumber = None
-        self.chargeNumber = None
+        self.dischargeNumber = 0
+        self.chargeNumber = 0
 
     def _notification_handler(self, sender, data):
         """
@@ -206,7 +206,7 @@ class SuperVoltBt(BtBms):
                         self.loadA = -self.chargingA + self.dischargingA
                         if self.verbose_log:
                             self.logger.debug("loadA:" + str(self.loadA) + "A")
-                        
+                        return
                         for i in range(0, 4):
                             start = end
                             end = start + 2
