@@ -32,19 +32,19 @@ class SuperVoltBt(BtBms):
         self.num_temp = 1
 
         self.cellV = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
-        self.totalV = 1
-        self.soc = 0
-        self.workingState = 0
-        self.alarm = 0
-        self.chargingA = 0
-        self.dischargingA = 0
-        self.loadA = 0
-        self.tempC = [0, 0, 0, 0]
+        self.totalV = None
+        self.soc = None
+        self.workingState = None
+        self.alarm = None
+        self.chargingA = None
+        self.dischargingA = None
+        self.loadA = None
+        self.tempC = [None, None, None, None]
         self.completeAh = 1
         self.remainingAh = 1
         self.designedAh = 1
-        self.dischargeNumber = 0
-        self.chargeNumber = 0
+        self.dischargeNumber = None
+        self.chargeNumber = None
 
     def _notification_handler(self, sender, data):
         """
@@ -214,7 +214,7 @@ class SuperVoltBt(BtBms):
                             self.tempC[i] = int(btemp.decode(), 16) - 40
                             if self.verbose_log:
                                 self.logger.debug("temp" + str(i) + ": " + str(btemp) + " / " + str(self.tempC[i]) + "°C")
-                        return
+                        
                         start = end
                         end = start + 4
                         self.workingState = int(data[start: end].decode(), 16)
@@ -398,19 +398,19 @@ class SuperVoltBt(BtBms):
             switches=dict(
                 #status_connected=self.is_connected(),
 
-                status_discharging=False,
-                status_charging=False,
+                status_discharging=(self.workingState & 0x0002 > 0),
+                status_charging=(self.workingState & 0x0001 > 0),
 
-                status_normal=False,
+                status_normal=(self.workingState & 0xF003 >= 0xF000),
 
-                status_protection=False,
-                status_short=False,
+                status_protection=(self.workingState & 0x000C > 0x0000),
+                status_short=(self.workingState & 0x0020 > 0),
 
-                status_overtemp=False,
-                status_undertemp=False,
+                status_overtemp=(self.workingState & 0x0500 > 0),
+                status_undertemp=(self.workingState & 0x0A00 > 0),
 
-                status_overvolt_protection=False,
-                status_undervolt_protection=False
+                status_overvolt_protection=(self.workingState & 0x0004 > 0),
+                status_undervolt_protection=(self.workingState & 0x0008 > 0)
             )
 
         )
