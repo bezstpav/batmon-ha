@@ -32,14 +32,14 @@ class SuperVoltBt(BtBms):
         self.num_temp = 1
 
         self.cellV = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
-        self.totalV = None
+        self.totalV = 1
         self.soc = 0
         self.workingState = 0
         self.alarm = 0
         self.chargingA = 0
         self.dischargingA = 0
-        self.loadA = None
-        self.tempC = [None, None, None, None]
+        self.loadA = 0
+        self.tempC = [0, 0, 0, 0]
         self.completeAh = 1
         self.remainingAh = 1
         self.designedAh = 1
@@ -206,7 +206,7 @@ class SuperVoltBt(BtBms):
                         self.loadA = -self.chargingA + self.dischargingA
                         if self.verbose_log:
                             self.logger.debug("loadA:" + str(self.loadA) + "A")
-                        return
+                        
                         for i in range(0, 4):
                             start = end
                             end = start + 2
@@ -214,7 +214,7 @@ class SuperVoltBt(BtBms):
                             self.tempC[i] = int(btemp.decode(), 16) - 40
                             if self.verbose_log:
                                 self.logger.debug("temp" + str(i) + ": " + str(btemp) + " / " + str(self.tempC[i]) + "°C")
-                        
+                        return
                         start = end
                         end = start + 4
                         self.workingState = int(data[start: end].decode(), 16)
