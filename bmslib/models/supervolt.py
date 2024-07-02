@@ -40,9 +40,9 @@ class SuperVoltBt(BtBms):
         self.dischargingA = None
         self.loadA = None
         self.tempC = [None, None, None, None]
-        self.completeAh = None
-        self.remainingAh = None
-        self.designedAh = None
+        self.completeAh = 1
+        self.remainingAh = 1
+        self.designedAh = 1
         self.dischargeNumber = None
         self.chargeNumber = None
 
@@ -56,6 +56,9 @@ class SuperVoltBt(BtBms):
             self.logger.info("notification: {} {}".format(data.hex(), sender))
         if data is not None:
             # ':' is the start of a new data set
+            if data.hex() == '41540d0a':
+             self.logger.info("notification: ignoring")
+             return
             if data[0] == ord(':'):
                 self.data = data
             else:
@@ -99,6 +102,7 @@ class SuperVoltBt(BtBms):
     
     # send request to battery for Capacity-Data
     async def requestCapacity(self):
+        return
         data = bytes(":001031000E05~", "ascii")
         #handle = 0x0013
         #handle = 19
@@ -124,7 +128,7 @@ class SuperVoltBt(BtBms):
             self.logger.debug("parseData: {}".format(len(data)))
         try:
             if data:
-                if len(data) == 128:
+                if len(data) >= 128:
                     if self.verbose_log:
                         self.logger.info("parse Realtimedata: {}".format(type(data)))
                     if type(data) is bytearray: 
